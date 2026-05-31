@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Theme Position Projector</title>
+    <style>
+  body {
+    font-family: sans-serif;
+    max-width: 400px;
+    margin: 40px auto;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+    margin-bottom: 24px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  input {
+    display: block;
+    margin-bottom: 16px;
+    padding: 6px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #results {
+    margin-top: 24px;
+    line-height: 2;
+  }
+</style>
+  </head>
+  <body>
+    <h1>Theme Position Projector</h1>
+
+    <label for="startAmount">Starting amount (kr.)</label>
+    <input id="startAmount" type="number" value="10000" oninput="calculate()" />
+
+
+    <label for="growthRate">Expected annual growth (%)</label>
+    <input id="growthRate" type="number" value="7" oninput="calculate()" />
+
+
+    <label for="years">Number of years</label>
+    <input id="years" type="number" value="10" oninput="calculate()" />
+
+
+    <div id="results">
+      Results will appear here.
+    </div>
+<script>
+  function calculate() {
+    var start = Number(document.getElementById("startAmount").value);
+    var rate = Number(document.getElementById("growthRate").value) / 100;
+    var years = Number(document.getElementById("years").value);
+
+    var finalValue = start * Math.pow(1 + rate, years);
+    var totalInvested = start;
+    var gain = finalValue - totalInvested;
+
+    document.getElementById("results").innerHTML =
+      "Projected value: " + Math.round(finalValue) + " kr." + "<br>" +
+      "Total invested: " + totalInvested + " kr." + "<br>" +
+      "Gain: " + Math.round(gain) + " kr.";
+  }
+
+  calculate();
+</script>
+  </body>
+</html>
