@@ -51,10 +51,24 @@
     <label for="years">Number of years</label>
     <input id="years" type="number" value="10" oninput="calculate()" />
 
-
     <div id="results">
       Results will appear here.
     </div>
+
+    <hr />
+
+    <h2>My Themes</h2>
+
+    <label for="themeName">Theme name</label>
+    <input id="themeName" type="text" placeholder="e.g. Clean Energy" />
+
+    <label for="themeTickers">Tickers</label>
+    <input id="themeTickers" type="text" placeholder="e.g. TSLA, ENPH, NEE" />
+
+    <button onclick="addTheme()">Add theme</button>
+
+    <div id="themeList"></div>
+
 <script>
   function calculate() {
     var start = Number(document.getElementById("startAmount").value);
@@ -72,6 +86,56 @@
   }
 
   calculate();
+
+  function addTheme() {
+    var name = document.getElementById("themeName").value.trim();
+    var tickers = document.getElementById("themeTickers").value.trim();
+
+    if (name === "") {
+      alert("Please enter a theme name.");
+      return;
+    }
+
+    var themes = loadThemes();
+    themes.push({ name: name, tickers: tickers });
+    saveThemes(themes);
+    renderThemes(themes);
+
+    document.getElementById("themeName").value = "";
+    document.getElementById("themeTickers").value = "";
+  }
+
+  function loadThemes() {
+    var stored = localStorage.getItem("themes");
+    if (stored === null) {
+      return [];
+    }
+    return JSON.parse(stored);
+  }
+
+  function saveThemes(themes) {
+    localStorage.setItem("themes", JSON.stringify(themes));
+  }
+
+  function renderThemes(themes) {
+    var list = document.getElementById("themeList");
+    list.innerHTML = "";
+    for (var i = 0; i < themes.length; i++) {
+      list.innerHTML += 
+        "<p>" +
+          "<strong>" + themes[i].name + "</strong> — " + themes[i].tickers +
+          " <button onclick='deleteTheme(" + i + ")'>Delete</button>" +
+        "</p>";
+    }
+  }
+
+    function deleteTheme(index) {
+    var themes = loadThemes();
+    themes.splice(index, 1);
+    saveThemes(themes);
+    renderThemes(themes);
+  }
+  renderThemes(loadThemes());
 </script>
   </body>
 </html>
